@@ -1,59 +1,61 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const AnimatedTitleWithBackground = () => {
-  const titleRef = useRef(null);
-  const backgroundRef = useRef(null);
+const Fireworks = () => {
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const letters = titleRef.current.children;
-    gsap.set(letters, { display: 'inline-block' });
+    const particles = containerRef.current.children;
+    const numParticles = particles.length;
 
-    gsap.fromTo(
-      letters,
-      { y: 50, opacity: 0, scale: 0.5, color: '#000' },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        color: '#ff6347',
-        stagger: 0.1,
-        duration: 1,
-        ease: 'elastic.out(1, 0.5)',
-      }
-    );
+    for (let i = 0; i < numParticles; i++) {
+      const angle = (i / numParticles) * Math.PI * 2;
+      const x = Math.cos(angle) * 100;
+      const y = Math.sin(angle) * 100;
 
-    gsap.to(backgroundRef.current, {
-      backgroundColor: '#1e90ff',
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: 'power1.inOut',
-    });
+      gsap.fromTo(
+        particles[i],
+        { x: 0, y: 0, opacity: 1 },
+        {
+          x: x,
+          y: y,
+          opacity: 0,
+          duration: 2,
+          ease: 'power1.out',
+          repeat: -1,
+          repeatDelay: 1,
+          delay: i * 0.1,
+        }
+      );
+    }
   }, []);
 
   return (
     <div
-      ref={backgroundRef}
+      ref={containerRef}
       style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
-        fontSize: '3rem',
-        fontWeight: 'bold',
-        letterSpacing: '0.1rem',
-        backgroundColor: '#ff6347',
-        transition: 'background-color 1s ease',
+        backgroundColor: '#000',
       }}
     >
-      <h1 ref={titleRef}>
-        {'Welcome to My Page'.split('').map((letter, index) => (
-          <span key={index} style={{ margin: '0 0.1rem' }}>
-            {letter}
-          </span>
-        ))}
-      </h1>
+      {[...Array(30)].map((_, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'absolute',
+            width: '10px',
+            height: '10px',
+            backgroundColor: 'white',
+            borderRadius: '50%',
+          }}
+        />
+      ))}
     </div>
   );
 };
@@ -61,7 +63,7 @@ const AnimatedTitleWithBackground = () => {
 const App = () => {
   return (
     <div>
-      <AnimatedTitleWithBackground />
+      <Fireworks />
     </div>
   );
 };
