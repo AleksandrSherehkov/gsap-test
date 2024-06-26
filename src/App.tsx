@@ -1,54 +1,46 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const TextLoader = () => {
-  const textRef = useRef(null);
+const AnimatedTitle = () => {
+  const titleRef = useRef(null);
 
   useEffect(() => {
-    const letters = textRef.current.children;
+    const letters = titleRef.current.children;
     gsap.set(letters, { display: 'inline-block' });
     gsap.fromTo(
       letters,
-      { y: 0, opacity: 0.5 },
+      { y: 50, opacity: 0, scale: 0.5, color: '#000' },
       {
-        y: -20,
+        y: 0,
         opacity: 1,
+        scale: 1,
+        color: '#ff6347',
         stagger: 0.1,
-        repeat: -1,
-        yoyo: true,
-        duration: 0.6,
-        ease: 'power1.inOut',
+        duration: 1,
+        ease: 'elastic.out(1, 0.5)',
       }
     );
-    gsap.to(letters, {
-      scale: 1.5,
-      color: '#ff6347',
-      duration: 1,
-      yoyo: true,
-      repeat: -1,
-      stagger: 0.1,
-    });
   }, []);
 
   return (
-    <div
-      ref={textRef}
+    <h1
+      ref={titleRef}
       style={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        fontSize: '2rem',
+        fontSize: '3rem',
         fontWeight: 'bold',
         letterSpacing: '0.1rem',
       }}
     >
-      {'Loading...'.split('').map((letter, index) => (
+      {'Welcome to My Page'.split('').map((letter, index) => (
         <span key={index} style={{ margin: '0 0.1rem' }}>
           {letter}
         </span>
       ))}
-    </div>
+    </h1>
   );
 };
 
@@ -62,7 +54,7 @@ const App = () => {
         height: '100vh',
       }}
     >
-      <TextLoader />
+      <AnimatedTitle />
     </div>
   );
 };
