@@ -1,50 +1,46 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const images = [
-  'https://via.placeholder.com/600x400?text=Image+1',
-  'https://via.placeholder.com/600x400?text=Image+2',
-  'https://via.placeholder.com/600x400?text=Image+3',
-];
-
-const ImageSlider = () => {
-  const sliderRef = useRef(null);
+const Loader = () => {
+  const loaderRef = useRef(null);
 
   useEffect(() => {
-    const slides = sliderRef.current.children;
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-
-    for (let i = 0; i < slides.length; i++) {
-      tl.to(slides[i], { opacity: 1, duration: 1 }).to(
-        slides[i],
-        { opacity: 0, duration: 1 },
-        '+=2'
-      );
-    }
+    const circles = loaderRef.current.children;
+    gsap.to(circles, {
+      rotation: 360,
+      transformOrigin: '50% 50%',
+      repeat: -1,
+      duration: 2,
+      stagger: 0.2,
+    });
+    gsap.to(circles, {
+      scale: 1.5,
+      repeat: -1,
+      yoyo: true,
+      duration: 1,
+      stagger: 0.2,
+    });
   }, []);
 
   return (
     <div
-      ref={sliderRef}
+      ref={loaderRef}
       style={{
-        position: 'relative',
-        width: '600px',
-        height: '400px',
-        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
       }}
     >
-      {images.map((src, index) => (
-        <img
+      {[...Array(5)].map((_, index) => (
+        <div
           key={index}
-          src={src}
-          alt={`Slide ${index + 1}`}
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0,
+            width: '20px',
+            height: '20px',
+            margin: '0 5px',
+            backgroundColor: '#008CBA',
+            borderRadius: '50%',
           }}
         />
       ))}
@@ -62,7 +58,7 @@ const App = () => {
         height: '100vh',
       }}
     >
-      <ImageSlider />
+      <Loader />
     </div>
   );
 };
