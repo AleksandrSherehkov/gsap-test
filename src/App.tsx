@@ -5,13 +5,14 @@ const ComplexLoader = () => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
-    const circles = loaderRef.current.children;
+    const stripes = loaderRef.current.children;
     const tl = gsap.timeline({ repeat: -1 });
 
-    tl.to(circles, {
+    gsap.set(stripes, { transformOrigin: '50% 50%' });
+
+    tl.to(stripes, {
       rotation: 360,
-      transformOrigin: '50% 50%',
-      duration: 2,
+      duration: 3,
       stagger: {
         each: 0.1,
         yoyo: true,
@@ -19,8 +20,8 @@ const ComplexLoader = () => {
       },
     });
 
-    gsap.to(circles, {
-      scale: 1.5,
+    gsap.to(stripes, {
+      scaleY: 2,
       backgroundColor: '#ff6347',
       duration: 1,
       yoyo: true,
@@ -28,12 +29,20 @@ const ComplexLoader = () => {
       stagger: 0.2,
     });
 
-    gsap.to(circles, {
+    gsap.to(stripes, {
       y: -20,
       duration: 0.5,
       yoyo: true,
       repeat: -1,
       stagger: 0.2,
+    });
+
+    gsap.to(stripes, {
+      scaleX: 0.5,
+      duration: 1,
+      yoyo: true,
+      repeat: -1,
+      stagger: 0.3,
     });
   }, []);
 
@@ -52,11 +61,10 @@ const ComplexLoader = () => {
         <div
           key={index}
           style={{
-            width: '20px',
-            height: '20px',
+            width: '10px',
+            height: '40px',
             margin: '0 5px',
             backgroundColor: '#008CBA',
-            borderRadius: '50%',
             position: 'absolute',
             top: '50%',
             left: '50%',
